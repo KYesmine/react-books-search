@@ -1,1 +1,3 @@
-GET https://www.googleapis.com/auth/books
+GET https://www.googleapis.com/books/v1/volumes?q=javascript
+###
+GET https://www.googleapis.com/books/v1/volumes/csQfVW3fnAwC
