@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-const useHttp = (url, applyData, config) => {
+const useHttp = (url, applyData, config = {}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const sendRequest = async () => {
     setIsLoading(true);
     setError(null);
-    const method = config?.method || "GET";
-    const headers = config?.headers || {};
-    const body = config?.body ? JSON.stringify(config?.body) : null;
+    const method = config.method || "GET";
+    const headers = config.headers || {};
+    const body = config.body ? JSON.stringify(config.body) : null;
 
     try {
       const response = await fetch(url, {
