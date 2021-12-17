@@ -1,5 +1,5 @@
 import { ACTIONS } from "./actions";
-const OFFSET = 12;
+const OFFSET = 40;
 
 const paginationReducer = (state, action) => {
   let newIndex, newPageUrl;

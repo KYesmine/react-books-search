@@ -5,15 +5,17 @@ import {
   HStack,
   IconButton,
   Input,
+  InputGroup,
+  InputLeftElement,
   useColorMode,
 } from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 import styles from "./Header.module.css";
 
-function Header() {
+function Header({ query, onSearch }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  const [value, setValue] = useState("");
 
   const toggleThemeHandler = () => {
     toggleColorMode();
@@ -23,7 +25,18 @@ function Header() {
     <HStack justify="space-between" pt="6" pb="6">
       <HStack spacing="20px" flex="1">
         <Heading as="h1">Books</Heading>
-        <Input placeholder="search for books..." />
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            children={<SearchIcon color="gray.300" />}
+          />
+          <Input
+            type="tel"
+            placeholder="Phone number"
+            value={query}
+            onChange={(e) => onSearch(e.target.value)}
+          />
+        </InputGroup>
       </HStack>
       <IconButton
         icon={colorMode === "light" ? <FaSun /> : <FaMoon />}

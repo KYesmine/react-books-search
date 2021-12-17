@@ -1,6 +1,7 @@
 .book {
   cursor: pointer;
   transition: opacity 0.2s ease-in-out;
+  opacity: 0.85;
 }
 
 .book:hover,

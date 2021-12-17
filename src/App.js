@@ -6,7 +6,9 @@ import {
   CloseButton,
   Container,
   Flex,
+  Heading,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 import Books from "./components/Books/Books";
 import Header from "./components/Header/Header";
@@ -18,8 +20,8 @@ import { ACTIONS } from "./reducers/pagination/actions";
 
 import "./App.css";
 
-const getAPI = (startedIndex) => {
-  return `https://www.googleapis.com/books/v1/volumes?q=css&printType=books&startIndex=${startedIndex}&maxResults=12`;
+const getAPI = (startedIndex, query = "") => {
+  return `https://www.googleapis.com/books/v1/volumes?q=${query}&printType=books&startIndex=${startedIndex}&maxResults=40`;
 };
 
 const init = {
@@ -33,6 +35,7 @@ function App() {
   const [books, setBooks] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [state, dispatch] = useReducer(paginationReducer, init);
+  const [query, setQuery] = useState("");
 
   const loadData = (data) => {
     const loadedBooks = data.items.map((book) => {
@@ -49,28 +52,33 @@ function App() {
       };
     });
     setBooks(loadedBooks);
-    setTotalItems(data.totalItems);
+    if (totalItems === 0) setTotalItems(data.totalItems);
   };
   const { isLoading, error, sendRequest } = useHttp(
-    getAPI(state.startedIndex),
+    getAPI(state.startedIndex, query),
     loadData
   );
 
   const { pageUrl } = state;
   useEffect(() => {
-    sendRequest();
-  }, [pageUrl]);
+    if (query !== "") sendRequest();
+  }, [pageUrl, query]);
 
   const nextPageHandler = () => {
     dispatch({ type: ACTIONS.NEXT_PAGE, getAPI, totalItems: totalItems });
   };
+
   const previousPageHandler = () => {
     dispatch({ type: ACTIONS.PREVIOUS_PAGE, getAPI });
   };
 
+  const searchBookHandler = (query) => {
+    setQuery(query);
+  };
+
   return (
     <Container maxW="container.lg">
-      <Header />
+      <Header query={query} onSearch={searchBookHandler} />
       {error && (
         <Alert status="error">
           <AlertIcon />
@@ -78,11 +86,9 @@ function App() {
           <CloseButton position="absolute" right="8px" top="8px" />
         </Alert>
       )}
-      {isLoading && !error && (
-        <Flex align="center" justify="center" minH="calc(100vh - 400px)">
-          <VscLoading className="spinner" size="35px" />
-        </Flex>
-      )}
+      <Heading as="h2" pb="1em">
+        Results
+      </Heading>
       <HStack justify="space-between">
         <Button
           colorScheme="blue"
@@ -99,7 +105,15 @@ function App() {
           next
         </Button>
       </HStack>
+      {isLoading && !error && (
+        <Flex align="center" justify="center" minH="calc(100vh - 400px)">
+          <VscLoading className="spinner" size="35px" />
+        </Flex>
+      )}
       {!isLoading && !error && books.length !== 0 && <Books books={books} />}
+      {!isLoading && !error && (books.length === 0 || query === "") && (
+        <Text mt="10">Search for books...</Text>
+      )}
     </Container>
   );
 }
