@@ -32,6 +32,7 @@ const init = {
 };
 
 function App() {
+  // TODO Build add to my favorite
   const [books, setBooks] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [state, dispatch] = useReducer(paginationReducer, init);
@@ -77,44 +78,50 @@ function App() {
   };
 
   return (
-    <Container maxW="container.lg">
+    <>
       <Header query={query} onSearch={searchBookHandler} />
-      {error && (
-        <Alert status="error">
-          <AlertIcon />
-          {error}
-          <CloseButton position="absolute" right="8px" top="8px" />
-        </Alert>
-      )}
-      <Heading as="h2" pb="1em">
-        Results
-      </Heading>
-      <HStack justify="space-between">
-        <Button
-          colorScheme="blue"
-          disabled={!state.isPrevious}
-          onClick={previousPageHandler}
-        >
-          previous
-        </Button>
-        <Button
-          colorScheme="blue"
-          disabled={!state.isNext}
-          onClick={nextPageHandler}
-        >
-          next
-        </Button>
-      </HStack>
-      {isLoading && !error && (
-        <Flex align="center" justify="center" minH="calc(100vh - 400px)">
-          <VscLoading className="spinner" size="35px" />
-        </Flex>
-      )}
-      {!isLoading && !error && books.length !== 0 && <Books books={books} />}
-      {!isLoading && !error && (books.length === 0 || query === "") && (
-        <Text mt="10">Search for books...</Text>
-      )}
-    </Container>
+      <Container maxW="container.lg">
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            {error}
+            <CloseButton position="absolute" right="8px" top="8px" />
+          </Alert>
+        )}
+        <Heading as="h2" pb="1em" mt=".8em">
+          Results
+        </Heading>
+        {books.length !== 0 && (
+          <HStack justify="space-between" mb="2em">
+            <Button
+              colorScheme="teal"
+              disabled={!state.isPrevious}
+              onClick={previousPageHandler}
+              variant="outline"
+            >
+              Previous
+            </Button>
+            <Button
+              colorScheme="teal"
+              disabled={!state.isNext}
+              onClick={nextPageHandler}
+              variant="outline"
+            >
+              Next
+            </Button>
+          </HStack>
+        )}
+        {isLoading && !error && (
+          <Flex align="center" justify="center" minH="calc(100vh - 400px)">
+            <VscLoading className="spinner" size="35px" />
+          </Flex>
+        )}
+        {!isLoading && !error && books.length !== 0 && <Books books={books} />}
+        {!isLoading && !error && (books.length === 0 || query === "") && (
+          <Text>Search for books...</Text>
+        )}
+      </Container>
+    </>
   );
 }
 
