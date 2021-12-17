@@ -1,0 +1,9 @@
+.book {
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.book:hover,
+.book:focus {
+  opacity: 0.5;
+}

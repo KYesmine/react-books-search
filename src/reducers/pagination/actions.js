@@ -1,0 +1,4 @@
+export const ACTIONS = {
+  PREVIOUS_PAGE: "PREVIOUS_PAGE",
+  NEXT_PAGE: "NEXT_PAGE",
+};

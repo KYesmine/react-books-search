@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Heading,
@@ -13,6 +13,7 @@ import styles from "./Header.module.css";
 
 function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [value, setValue] = useState("");
 
   const toggleThemeHandler = () => {
     toggleColorMode();
@@ -20,7 +21,7 @@ function Header() {
 
   return (
     <HStack justify="space-between" pt="6" pb="6">
-      <HStack spacing="20px">
+      <HStack spacing="20px" flex="1">
         <Heading as="h1">Books</Heading>
         <Input placeholder="search for books..." />
       </HStack>
